@@ -9,9 +9,13 @@ router.get('/', function(req, res, next) {
 
 
 router.get('/signup', function(req, res, next) {
-  
   res.render('signup', { title: 'Password Management System', msg:'' });
-  
+});
+router.get('/passwordCategory', function(req, res, next) {
+  res.render('password_category', { title: 'Password Management System', msg:'' });
+});
+router.get('/add-new-category', function(req, res, next) {
+  res.render('addNewCategory', { title: 'Password Management System', msg:'' });
 });
 
 
