@@ -3,7 +3,17 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'LogIn' });
+  res.render('index', { title: 'Password Managment System' });
 });
+
+
+
+router.get('/signup', function(req, res, next) {
+  
+  res.render('signup', { title: 'Password Management System', msg:'' });
+  
+});
+
+
 
 module.exports = router;
