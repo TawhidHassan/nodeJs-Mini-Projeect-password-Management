@@ -17,6 +17,12 @@ router.get('/passwordCategory', function(req, res, next) {
 router.get('/add-new-category', function(req, res, next) {
   res.render('addNewCategory', { title: 'Password Management System', msg:'' });
 });
+router.get('/add-new-password', function(req, res, next) {
+  res.render('add-new-password', { title: 'Password Management System', msg:'' });
+});
+router.get('/view-all-password', function(req, res, next) {
+  res.render('view-all-password', { title: 'Password Management System', msg:'' });
+});
 
 
 
