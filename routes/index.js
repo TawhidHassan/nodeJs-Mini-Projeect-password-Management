@@ -106,7 +106,12 @@ function checkEmail(req,res,next){
 //midel ware check name not duplicate//
 
 router.get('/signup', function(req, res, next) {
+  var loginUser=localStorage.getItem('loginUser');
+  if(loginUser){
+    res.redirect('./dashboard');
+  }else{
   res.render('signup', { title: 'Password Management System', msg:'' });
+  }
 });
 router.post('/signup',checkUsername,checkEmail,function(req, res, next) {
   var username=req.body.uname;
