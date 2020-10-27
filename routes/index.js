@@ -4,8 +4,13 @@ var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcryptjs');
 var userModule=require('../modules/user');
+var passCatModel = require('../modules/passwordCategory');
 var jwt = require('jsonwebtoken');
 const { Router } = require('express');
+//for validation
+const { check, validationResult } = require('express-validator');
+
+
 //local storage for JWT
 if (typeof localStorage === "undefined" || localStorage === null) {
   const LocalStorage = require('node-localstorage').LocalStorage;
@@ -144,19 +149,62 @@ router.get('/logout', function(req, res, next) {
   localStorage.removeItem('loginUser');
   res.redirect('/');
 });
+///=============================== LogOut =====================================================================////////////////////
 
+
+///////===============================  password category ==========================================///////////////////////
+
+router.get('/add-new-category', checkLoginUser,function(req, res, next) {
+  var user=localStorage.getItem('loginUser');
+  res.render('addNewCategory', { title: 'Password Management System', msg:'',loginUser:user,errors:'',success:'' });
+});
+
+router.post('/add-new-category', checkLoginUser,[check('passwordCategory',"Enter Password Category Name").isLength({min:1})],function(req, res, next) {
+  var user=localStorage.getItem('loginUser');
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    // console.log(errors.mapped())
+    return res.render('addNewCategory', { title: 'Password Management System',loginUser:user,errors: errors.mapped(),success:''});
+  }else{
+
+    var passCatName=req.body.passwordCategory;
+    var passcatDetaild=new passCatModel({
+      passord_category:passCatName
+    });
+
+    passcatDetaild.save(function(err,doc){
+        if(err) throw err;
+        res.render('addNewCategory', { title: 'Password Management System',loginUser:user,errors:'',success:'Category Saved' });
+    }); 
+  }
+});
 
 router.get('/passwordCategory', checkLoginUser,function(req, res, next) {
-  res.render('password_category', { title: 'Password Management System', msg:'' });
+  var user=localStorage.getItem('loginUser');
+  res.render('password_category', { title: 'Password Management System', msg:'',loginUser:user  });
 });
-router.get('/add-new-category', checkLoginUser,function(req, res, next) {
-  res.render('addNewCategory', { title: 'Password Management System', msg:'' });
-});
+
+///////===============================  password category ==========================================///////////////////////
+
+
+
+
+
+
+
+
+
 router.get('/add-new-password', checkLoginUser,function(req, res, next) {
-  res.render('add-new-password', { title: 'Password Management System', msg:'' });
+  var user=localStorage.getItem('loginUser');
+  res.render('add-new-password', { title: 'Password Management System', msg:'',loginUser:user });
 });
+
+
+
+
 router.get('/view-all-password', checkLoginUser,function(req, res, next) {
-  res.render('view-all-password', { title: 'Password Management System', msg:'' });
+  var user=localStorage.getItem('loginUser');
+  res.render('view-all-password', { title: 'Password Management System', msg:'',loginUser:user });
 });
 
 
