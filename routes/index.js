@@ -202,6 +202,32 @@ router.get('/passwordCategory/delete/:id', checkLoginUser,function(req, res, nex
   });
 });
 
+
+router.get('/passwordCategory/edit/:id', checkLoginUser,function(req, res, next) {
+  var loginUser=localStorage.getItem('loginUser');
+  var passcat_id=req.params.id;
+  var getpassCategory=passCatModel.findById(passcat_id);
+  getpassCategory.exec(function(err,data){
+    if(err) throw err;
+ 
+    res.render('edit_pass_category', { title: 'Password Management System',loginUser: loginUser,errors:'',success:'',records:data,id:passcat_id});
+
+  });
+});
+
+router.post('/passwordCategory/edit/', checkLoginUser,function(req, res, next) {
+  var loginUser=localStorage.getItem('loginUser');
+  var passcat_id=req.body.id;
+  var passwordCategory=req.body.passwordCategory;
+ var update_passCat= passCatModel.findByIdAndUpdate(passcat_id,{passord_category:passwordCategory});
+ update_passCat.exec(function(err,doc){
+    if(err) throw err;
+ 
+res.redirect('/passwordCategory');
+  });
+});
+
+
 ///////===============================  password category ==========================================///////////////////////
 
 
