@@ -191,6 +191,17 @@ router.get('/passwordCategory', checkLoginUser,function(req, res, next) {
   
 });
 
+
+router.get('/passwordCategory/delete/:id', checkLoginUser,function(req, res, next) {
+  var user=localStorage.getItem('loginUser');
+  var passcat_id=req.params.id;
+  var passdelete=passCatModel.findByIdAndDelete(passcat_id);
+  passdelete.exec(function(err){
+    if(err) throw err;
+    res.redirect('/passwordCategory');
+  });
+});
+
 ///////===============================  password category ==========================================///////////////////////
 
 
