@@ -10,6 +10,8 @@ const { Router } = require('express');
 //for validation
 const { check, validationResult } = require('express-validator');
 
+var getPassCat=passCatModel.find({});
+
 
 //local storage for JWT
 if (typeof localStorage === "undefined" || localStorage === null) {
@@ -181,7 +183,12 @@ router.post('/add-new-category', checkLoginUser,[check('passwordCategory',"Enter
 
 router.get('/passwordCategory', checkLoginUser,function(req, res, next) {
   var user=localStorage.getItem('loginUser');
-  res.render('password_category', { title: 'Password Management System', msg:'',loginUser:user  });
+  getPassCat.exec(function(err,data){
+
+    if(err) throw err;
+    res.render('password_category', { title: 'Password Management System', msg:'',loginUser:user,records:data  });
+  });
+  
 });
 
 ///////===============================  password category ==========================================///////////////////////
