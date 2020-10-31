@@ -14,6 +14,7 @@ const { Router } = require('express');
 const { check, validationResult } = require('express-validator');
 
 var getPassCat=passCatModel.find({});
+var getAllPass=passModel.find({});
 
 
 //local storage for JWT
@@ -268,7 +269,11 @@ passDetails.save(function(err,data){
 
 router.get('/view-all-password', checkLoginUser,function(req, res, next) {
   var user=localStorage.getItem('loginUser');
-  res.render('view-all-password', { title: 'Password Management System', msg:'',loginUser:user,});
+  getAllPass.exec(function(err,data){
+    if(err)throw err;
+    res.render('view-all-password', { title: 'Password Management System', msg:'',loginUser:user,records:data});
+  })
+  
 });
 
 
