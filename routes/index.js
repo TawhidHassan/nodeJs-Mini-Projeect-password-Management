@@ -235,6 +235,8 @@ res.redirect('/passwordCategory');
 ///////===============================  password category ==========================================///////////////////////
 
 
+///======================================  add Pasword ===============================================//////////////////////////
+
 router.get('/add-new-password', checkLoginUser,function(req, res, next) {
   var user=localStorage.getItem('loginUser');
   getPassCat.exec(function(err,data){
@@ -269,11 +271,45 @@ passDetails.save(function(err,data){
 
 router.get('/view-all-password', checkLoginUser,function(req, res, next) {
   var user=localStorage.getItem('loginUser');
-  getAllPass.exec(function(err,data){
+
+  var perPage=4;
+  var page=req.params.page || 1;
+
+  getAllPass.skip((perPage*page)- perPage)
+  .limit(perPage).exec(function(err,data){
     if(err)throw err;
-    res.render('view-all-password', { title: 'Password Management System', msg:'',loginUser:user,records:data});
-  })
-  
+    passModel.countDocuments({}).exec((err,count)=>{
+    res.render('view-all-password', { title: 'Password Management System',
+     msg:'',
+     loginUser:user,
+     records: data,
+     current: page,
+     pages: Math.ceil(count / perPage) 
+    });
+  });
+});
+});
+
+
+router.get('/view-all-password/:page', checkLoginUser,function(req, res, next) {
+  var user=localStorage.getItem('loginUser');
+
+  var perPage=4;
+  var page=req.params.page || 1;
+
+  getAllPass.skip((perPage*page)- perPage)
+  .limit(perPage).exec(function(err,data){
+    if(err)throw err;
+    passModel.countDocuments({}).exec((err,count)=>{
+    res.render('view-all-password', { title: 'Password Management System',
+     msg:'',
+     loginUser:user,
+     records: data,
+     current: page,
+     pages: Math.ceil(count / perPage) 
+    });
+  });
+});
 });
 
 
