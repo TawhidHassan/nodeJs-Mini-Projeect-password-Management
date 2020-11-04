@@ -1,4 +1,6 @@
-const mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    mongoosePaginate = require('mongoose-paginate'),
+    Schema = mongoose.Schema;
 mongoose.connect('mongodb://localhost:27017/pms', {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true});
 var conn =mongoose.Collection;
 var passSchema =new mongoose.Schema({
@@ -15,6 +17,6 @@ var passSchema =new mongoose.Schema({
         type: Date, 
         default: Date.now }
 });
-
+passSchema.plugin(mongoosePaginate);
 var passModel = mongoose.model('password_details', passSchema);
 module.exports=passModel;
