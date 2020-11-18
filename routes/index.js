@@ -3,6 +3,7 @@ const e = require('express');
 var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcryptjs');
+var session = require('express-session')
 
 var passModel = require('../modules/password');
 var userModule=require('../modules/user');
@@ -43,7 +44,7 @@ function checkLoginUser(req,res,next){
 /* GET home page. */
 router.get('/', function(req, res, next) {
   var loginUser=localStorage.getItem('loginUser');
-  if(loginUser){
+  if(req.session.userName){
     res.redirect('./dashboard');
   }else{
   res.render('index', { title: 'Password Management System', msg:'' });
@@ -67,6 +68,7 @@ router.post('/', function(req, res, next) {
         var token = jwt.sign({ userID: getUserID }, 'loginToken');
         localStorage.setItem('userToken', token);
         localStorage.setItem('loginUser', username);
+        req.session.userName=username;
         res.redirect('/dashboard');
         // res.render('index', { title: 'Password Management System', msg:"done." });
       }else{
@@ -114,7 +116,7 @@ function checkEmail(req,res,next){
 
 router.get('/signup', function(req, res, next) {
   var loginUser=localStorage.getItem('loginUser');
-  if(loginUser){
+  if(req.session.userName){
     res.redirect('./dashboard');
   }else{
   res.render('signup', { title: 'Password Management System', msg:'' });
@@ -147,6 +149,13 @@ userDetails.save((err,doc)=>{
 
 ///=========================== LogOut====================================================================//////////////////////////
 router.get('/logout', function(req, res, next) {
+
+  req.session.destroy(function(err) {
+    if(err)
+    {
+      res.redirect('/');
+    }
+  })
   localStorage.removeItem('userToken');
   localStorage.removeItem('loginUser');
   res.redirect('/');

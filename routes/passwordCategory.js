@@ -7,7 +7,7 @@ var bcrypt = require('bcryptjs');
 var passModel = require('../modules/password');
 var userModule=require('../modules/user');
 var passCatModel = require('../modules/passwordCategory');
-
+var session = require('express-session')
 var jwt = require('jsonwebtoken');
 const { Router } = require('express');
 //for validation
@@ -27,7 +27,11 @@ if (typeof localStorage === "undefined" || localStorage === null) {
 function checkLoginUser(req,res,next){
   var userToken=localStorage.getItem('userToken');
   try {
-    var decoded = jwt.verify(userToken, 'loginToken');
+    if(req.session.userName){
+      var decoded = jwt.verify(userToken, 'loginToken');
+    }else{
+      res.redirect('/');
+    }
   } catch(err) {
     res.redirect('/');
   }

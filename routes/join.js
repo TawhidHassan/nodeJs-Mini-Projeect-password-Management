@@ -38,7 +38,6 @@ function checkLoginUser(req,res,next){
   next();
 }
 
-
 // router.get('/view-all-password', checkLoginUser,function(req, res, next) {
 //   var user=localStorage.getItem('loginUser');
 
@@ -83,47 +82,31 @@ function checkLoginUser(req,res,next){
 // });
 
 ///========with mongoose pagination plugin =====================///
-router.get('/', checkLoginUser,function(req, res, next) {
-    var user=localStorage.getItem('loginUser');
-    var options = {
-      offset:   1, 
-      limit:    3
-  };
-   
+router.get('/',checkLoginUser, function(req, res, next) {
+ 
+    var loginUser=localStorage.getItem('loginUser');
   
-    passModel.paginate({},options).then(function(data){
-      res.render('view-all-password', { title: 'Password Management System',
-       msg:'',
-       loginUser:user,
-       records: data.docs,
-       current: data.offset,
-       pages: Math.ceil( data.total/data.limit)
-      });
-    
+  passModel.aggregate([
+    {
+      $lookup:
+        {
+          from: "password_categories",
+          localField: "password_category",
+          foreignField: "passord_category",
+          as: "pass_cat_details"
+        }
+   },
+   { $unwind : "$pass_cat_details" }
+ ]).exec(function(err,results){
+     if(err) throw err;
+     console.log(results);
+     res.send(results);
+
+ });
+  
   });
-  });
   
   
-  router.get('/:page', checkLoginUser,function(req, res, next) {
-    var user=localStorage.getItem('loginUser');
-  
-    var perPage=4;
-    var page=req.params.page || 1;
-  
-    getAllPass.skip((perPage*page)- perPage)
-    .limit(perPage).exec(function(err,data){
-      if(err)throw err;
-      passModel.countDocuments({}).exec((err,count)=>{
-      res.render('view-all-password', { title: 'Password Management System',
-       msg:'',
-       loginUser:user,
-       records: data,
-       current: page,
-       pages: Math.ceil(count / perPage) 
-      });
-    });
-  });
-  });
 
 
   
