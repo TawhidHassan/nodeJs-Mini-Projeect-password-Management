@@ -71,9 +71,17 @@ router.patch("/update-category/:id",function(req,res,next){
 
 
 
-router.delete("/add-delte-category",function(req,res,next){
+router.delete("/add-delte-category/:id",function(req,res,next){
+    var id=req.params.id;
+    passCatModel.findById(id,function(err,data){
 
-    res.send("Nodejs restFull Api DELETE method Working");
+       
+        data.delete(function(){
+            if(err)throw err;
+            res.send("Nodejs restFull Api DELTE method Working----Data DELETE successfully");
+        });
+        
+    })
 });
 
 
