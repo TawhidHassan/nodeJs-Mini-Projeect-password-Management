@@ -6,7 +6,7 @@ var passModel = require('../modules/password');
 var userModule=require('../modules/user');
 var passCatModel = require('../modules/passwordCategory');
 
-var getPassCat=passCatModel.find({},{'passord_category':1,'_id':0});
+var getPassCat=passCatModel.find({},{'passord_category':1,'_id':1});
 
 router.get("/getCAtegory",function(req,res,next){
     getPassCat.exec(function(err,data){
@@ -31,14 +31,46 @@ router.post("/add-category",function(req,res,next){
 
 
 
-router.put("/add-update-category",function(req,res,next){
+router.put("/add-update-category/:id",function(req,res,next){
 
-    res.send("Nodejs restFull Api PUT method Working");
-});
-router.patch("/add-pach-category",function(req,res,next){
+    var id=req.params.id;
+    var passCategory=req.body.pass_cat;
 
-    res.send("Nodejs restFull Api PATCH method Working");
+    passCatModel.findById(id,function(err,data){
+
+        data.passord_category=passCategory?passCategory:data.passord_category;
+        data.save(function(){
+            if(err)throw err;
+            res.send("Nodejs restFull Api PUT method Working----Data update successfully");
+        });
+        
+    })
+   
+
+   
 });
+
+
+router.patch("/update-category/:id",function(req,res,next){
+
+    var id=req.params.id;
+    var passCategory=req.body.pass_cat;
+
+    passCatModel.findById(id,function(err,data){
+
+        data.passord_category=passCategory?passCategory:data.passord_category;
+        data.save(function(){
+            if(err)throw err;
+            res.send("Nodejs restFull Api PAtch method Working----Data update successfully");
+        });
+        
+    })
+   
+});
+
+
+
+
 router.delete("/add-delte-category",function(req,res,next){
 
     res.send("Nodejs restFull Api DELETE method Working");
