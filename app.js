@@ -16,6 +16,9 @@ var passworddetailRouter = require('./routes/password-detail');
 var joinRouter = require('./routes/join');
 var usersRouter = require('./routes/users');
 
+//api
+var PassCatApi = require('./api/add-category');
+
 var app = express();
 
 // view engine setup
@@ -43,6 +46,10 @@ app.use('/view-all-password', viewallpasswordRouter);
 app.use('/password-detail', passworddetailRouter);
 app.use('/joinResult', joinRouter);
 app.use('/users', usersRouter);
+
+
+//api
+app.use('/api', PassCatApi);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
