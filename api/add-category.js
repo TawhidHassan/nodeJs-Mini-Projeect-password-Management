@@ -12,7 +12,11 @@ router.get("/getCAtegory",function(req,res,next){
     getPassCat.exec(function(err,data){
         if(err) throw err;
         // res.send("Nodejs restFull Api GET method Working"+data);
-        res.send(data);
+        // res.send(data);
+        res.status(200).json({
+            messege:"Success",
+            result:data
+        });
       });
    
 });

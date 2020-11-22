@@ -64,7 +64,13 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  // res.render('error');
+   res.status(404).json(
+    { error:"PAge not found"}
+   );
+   res.status(505).json(
+    { error:"internal server error "}
+   );
 });
 
 module.exports = app;
