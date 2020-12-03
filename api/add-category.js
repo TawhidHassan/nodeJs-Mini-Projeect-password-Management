@@ -118,5 +118,51 @@ router.delete("/add-delte-category/:id",function(req,res,next){
     })
 });
 
+///////////////=====================================================================================================================================
+////////////////=====================================================================================================================================
+
+//add password
+router.post("/add-new-password",function(req,res,next){
+
+    var pass_cat=req.body.pass_cat;
+    var pass_details=req.body.pass_details;
+    var project_name=req.body.project_name;
+
+    var passDetail=new passModel({
+        password_category:pass_cat,
+       project_name:project_name,
+       password_detail:pass_details
+    });
+    // passCatDetail.save(function(err,doc){
+    //     if(err)throw err;
+    //     res.send("success---Nodejs restFull Api POST method Working");
+        
+    // }) 
+    passDetail.save()
+    .then(doc=>{
+        res.status(201).json({
+            messege:"password saved successfully",
+            result:doc
+        });
+    })
+    .catch(err=>{
+         res.json(err);
+    });
+
+});
+
+//password get
+router.get("/getAllPasswords",function(req,res,next){
+    passModel.find().exec(function(err,data){
+        if(err) throw err;
+        // res.send("Nodejs restFull Api GET method Working"+data);
+        // res.send(data);
+        res.status(200).json({
+            messege:"Success",
+            result:data
+        });
+      });
+   
+});
 
 module.exports=router;
