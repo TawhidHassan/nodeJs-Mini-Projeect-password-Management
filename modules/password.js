@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 mongoose.connect('mongodb://localhost:27017/pms', {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true});
 var conn =mongoose.Collection;
 var passSchema =new mongoose.Schema({
-    password_category: {type:String, 
+    password_category: {type:Schema.Types.ObjectId, ref:'password_categories',
         required: true,
         },
         project_name: {type:String, 

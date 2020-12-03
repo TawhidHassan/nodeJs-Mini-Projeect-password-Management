@@ -153,10 +153,11 @@ router.post("/add-new-password",function(req,res,next){
 
 //password get
 router.get("/getAllPasswords",function(req,res,next){
-    passModel.find().exec(function(err,data){
+    passModel.find()
+    .select("_id password_category project_name password_detail")
+    .populate("password_category", "passord_category")
+    .exec(function(err,data){
         if(err) throw err;
-        // res.send("Nodejs restFull Api GET method Working"+data);
-        // res.send(data);
         res.status(200).json({
             messege:"Success",
             result:data
