@@ -1,7 +1,12 @@
 var express = require('express');
 var router = express.Router();
 module.exports = router;
+var multer  = require('multer')
 var productModel = require('../modules/products');
+
+//image path
+//limit:5mb
+//filter :png,jpg,jpeg
 
 
 router.get("/",function(req,res,next){
