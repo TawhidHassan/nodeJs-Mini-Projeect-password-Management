@@ -18,6 +18,7 @@ var usersRouter = require('./routes/users');
 
 //api
 var PassCatApi = require('./api/add-category');
+var ProductApi = require('./api/product');
 
 var app = express();
 
@@ -50,6 +51,7 @@ app.use('/users', usersRouter);
 
 //api
 app.use('/api', PassCatApi);
+app.use('/productApi/',ProductApi);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
