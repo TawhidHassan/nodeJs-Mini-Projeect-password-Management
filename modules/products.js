@@ -15,6 +15,9 @@ var productSchema =new mongoose.Schema({
         quantity: {type:Number, 
             required: true,
            },
+        iamge: {type:String, 
+            required: true,
+           },
     date:{
         type: Date, 
         default: Date.now }
