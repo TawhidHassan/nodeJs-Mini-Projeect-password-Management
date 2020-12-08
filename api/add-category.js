@@ -8,6 +8,9 @@ var passCatModel = require('../modules/passwordCategory');
 
 var getPassCat=passCatModel.find({},{'passord_category':1,'_id':1});
 
+//for middelware
+var checkAuth=require('./middleware/auth');
+
 router.get("/getCAtegory",function(req,res,next){
     getPassCat.exec(function(err,data){
         if(err) throw err;

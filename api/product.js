@@ -5,6 +5,10 @@ var multer  = require('multer')
 
 var productModel = require('../modules/products');
 
+
+//for middelware
+var checkAuth=require('./middleware/auth');
+
 //image path
 //limit:5mb
 //filter :png,jpg,jpeg
@@ -38,14 +42,14 @@ var storage = multer.diskStorage({
 
 
 
-router.get("/",function(req,res,next){
+router.get("/",checkAuth,function(req,res,next){
 
      res.json({
          message:"success"
      });
 });
 
-router.get('/getAllProduct', (req, res,next) => {
+router.get('/getAllProduct', checkAuth,(req, res,next) => {
     productModel
     .find()
     .select("name price quantity image")
@@ -59,9 +63,10 @@ router.get('/getAllProduct', (req, res,next) => {
 
 });
 
-router.post('/add', upload.single('productImage'),function(req, res,next){
+router.post('/add',upload.single('productImage'),checkAuth,function(req, res,next){
 
     console.log(req.file);
+    console.log(req.userData);
 
     var name=req.body.name;
     var price=req.body.price;
