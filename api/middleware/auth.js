@@ -1,6 +1,7 @@
 
 var jwt = require('jsonwebtoken');
-
+require('dotenv').config()  
+var  key=process.env.SECRECT_KEY;
 
 module.exports=(req,res,next)=>{
     // var headerToken=req.headers;
@@ -8,7 +9,7 @@ module.exports=(req,res,next)=>{
     try{
         // var token=req.body.token.split(" ")[1];
         var token=req.headers.authorization.split(" ")[1];//if used header
-        var decode=jwt.verify(token,"secret");
+        var decode=jwt.verify(token,key);
         req.userData=decode;
         // console.log(token);
         next();

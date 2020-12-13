@@ -1,7 +1,9 @@
 var mongoose = require('mongoose'),
     mongoosePaginate = require('mongoose-paginate'),
     Schema = mongoose.Schema;
-mongoose.connect('mongodb://localhost:27017/pms', {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true});
+require('dotenv').config()  
+var  dburl=process.env.MONGO_DB_URL;
+mongoose.connect(dburl, {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true});
 var conn =mongoose.Collection;
 var passSchema =new mongoose.Schema({
     password_category: {type:Schema.Types.ObjectId, ref:'password_categories',
